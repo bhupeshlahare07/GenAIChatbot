@@ -1,6 +1,10 @@
 import streamlit as st
 from PyPDF2 import PdfReader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.vectorstores import FAISS
+
+
 
 #upload pdf files
 st.header("My first chatbot")
@@ -26,3 +30,9 @@ if file is not None:
     )
     chunks = text_splitter.split_text(text)
     st.write(chunks)
+
+    # generating embedding
+    embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
+
+    # creating vector store - FAISS
+    vector_store = FAISS.from_texts(chunks, embeddings)
